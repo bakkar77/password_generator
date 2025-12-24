@@ -4,7 +4,7 @@ import string
 import pandas as pd
 
 st.set_page_config(page_title="Password Generator")
-st.title("Password Generator")
+st.title("Simple Password Generator")
 
 if "history" not in st.session_state:
     st.session_state.history = []
@@ -46,34 +46,34 @@ st.header("Options")
 length = st.number_input("Password length", min_value=0, value=12)
 
 preset = st.radio(
-    "Choose a preset",
-    ["Letters only", "Letters + numbers", "Strong", "Custom"]
+    "Choose a theme preset",
+    ["Letters Only", "Letters + Numbers", "Full Strength", "Custom"]
 )
 
 use_upper = use_lower = use_numbers = use_symbols = False
 
-if preset == "Letters only":
+if preset == "Letters Only":
     use_upper = True
     use_lower = True
-elif preset == "Letters + numbers":
+elif preset == "Letters + Numbers":
     use_upper = True
     use_lower = True
     use_numbers = True
-elif preset == "Strong":
+elif preset == "Full Strength":
     use_upper = True
     use_lower = True
     use_numbers = True
     use_symbols = True
 else:
-    use_upper = st.checkbox("Uppercase letters")
-    use_lower = st.checkbox("Lowercase letters")
+    use_upper = st.checkbox("Uppercase Letters")
+    use_lower = st.checkbox("Lowercase Letters")
     use_numbers = st.checkbox("Numbers")
     use_symbols = st.checkbox("Symbols")
 
 
-if st.button("Generate"):
+if st.button("Generate Password"):
     if length < 8:
-        st.error("Hmm… that’s kinda short. Try 8 or more characters.")
+        st.error("Hmm… that’s pretty short. Try 8 or more characters!")
     else:
         pool = ""
         password = ""
@@ -95,7 +95,7 @@ if st.button("Generate"):
             password += random.choice(string.punctuation)
 
         if pool == "":
-            st.warning("Hey, you gotta pick at least one character type!")
+            st.warning("Hey, pick at least one type of character, please!")
         else:
             while len(password) < length:
                 password += random.choice(pool)
@@ -120,7 +120,7 @@ if st.button("Generate"):
 st.divider()
 st.write(f"You’ve generated {st.session_state.total} passwords so far!")
 
-if st.checkbox("Show previous passwords"):
+if st.checkbox("Show Password History"):
     if st.session_state.history:
         df = pd.DataFrame({
             "Password": st.session_state.history,
@@ -128,11 +128,10 @@ if st.checkbox("Show previous passwords"):
         })
         st.table(df)
     else:
-        st.write("No passwords yet… make one first!")
+        st.write("No passwords yet… generate one first!")
 
-if st.button("Clear history"):
+if st.button("Clear History"):
     st.session_state.history = []
     st.session_state.strengths = []
     st.session_state.total = 0
     st.rerun()
-
