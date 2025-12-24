@@ -4,7 +4,7 @@ import string
 import pandas as pd
 
 st.set_page_config(page_title="Password Generator")
-st.title("Simple Password Generator")
+st.title("Password Generator")
 
 if "history" not in st.session_state:
     st.session_state.history = []
@@ -135,3 +135,4 @@ if st.button("Clear History"):
     st.session_state.strengths = []
     st.session_state.total = 0
     st.rerun()
+
